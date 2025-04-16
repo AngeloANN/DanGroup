@@ -1,10 +1,8 @@
 // server/controllers/contactController.js
-const Contact = require('../models/Contact');
+const mongoose = require('mongoose');
 const sendEmail = require('../utils/emailSender');
 
-// First, let's create the Contact model
-const mongoose = require('mongoose');
-
+// Define the Contact model (move this to a separate model file later)
 const ContactSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -38,7 +36,8 @@ const ContactSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const Contact = mongoose.model('Contact', ContactSchema);
+// Use mongoose.models to check if the model is already defined
+const Contact = mongoose.models.Contact || mongoose.model('Contact', ContactSchema);
 
 /**
  * Submit contact form

@@ -1,8 +1,8 @@
 // server/seeder.js
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const User = require('./models/user');
-const Service = require('./models/Service');
+const User = require('./server/models/user');
+const Service = require('./server/models/Service');
 
 // Load env vars
 dotenv.config();

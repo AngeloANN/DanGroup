@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Groupe Dan Inc.</title>
+    <meta name="description" content="Contactez Groupe Dan Inc. pour vos besoins d'import-export, de logistique, d'entreposage et de services mécaniques.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Groupe Dan Inc. Logo">
+                </a>
+            </div>
+            <nav>
+                <div class="language-toggle">
+                    <button class="active" data-lang="fr">FR</button>
+                    <button data-lang="en">EN</button>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="about.html">À Propos</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                    <li><a href="quote.html" class="btn btn-primary">Demander un Devis</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 class="lang-fr">Contactez-Nous</h1>
+            <h1 class="lang-en">Contact Us</h1>
+        </div>
+    </section>
+
+    <section class="contact-info">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="lang-fr">Notre Adresse</h3>
+                    <h3 class="lang-en">Our Address</h3>
+                    <p>1400 rue de Guise, La Prairie, QC J5R 5W6</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 class="lang-fr">Téléphone</h3>
+                    <h3 class="lang-en">Phone</h3>
+                    <p>+1 438 938 3100</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="lang-fr">Courriel</h3>
+                    <h3 class="lang-en">Email</h3>
+                    <p>info@groupedan.com</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="lang-fr">Heures d'Ouverture</h3>
+                    <h3 class="lang-en">Business Hours</h3>
+                    <p class="lang-fr">Lun-Ven: 8h - 17h <br> Sam: 9h - 15h</p>
+                    <p class="lang-en">Mon-Fri: 8AM - 5PM <br> Sat: 9AM - 3PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="contact-wrapper">
+                <div class="form-container">
+                    <h2 class="lang-fr">Envoyez-nous un Message</h2>
+                    <h2 class="lang-en">Send us a Message</h2>
+                    
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name" class="lang-fr">Nom</label>
+                            <label for="name" class="lang-en">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="lang-fr">Courriel</label>
+                            <label for="email" class="lang-en">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject" class="lang-fr">Sujet</label>
+                            <label for="subject" class="lang-en">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message" class="lang-fr">Message</label>
+                            <label for="message" class="lang-en">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary lang-fr">Envoyer</button>
+                        <button type="submit" class="btn btn-primary lang-en">Send</button>
+                    </form>
+                    
+                    <div id="formSuccess" class="form-success">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 class="lang-fr">Merci pour votre message!</h3>
+                        <h3 class="lang-en">Thank you for your message!</h3>
+                        <p class="lang-fr">Nous vous répondrons dans les plus brefs délais.</p>
+                        <p class="lang-en">We will get back to you as soon as possible.</p>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="Groupe Dan Inc. Logo">
+                    <p class="lang-fr">Groupe Dan Inc. - Relier les marchés, livrer l'excellence.</p>
+                    <p class="lang-en">Dan Group Inc. - Bridging Markets, Delivering Excellence.</p>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 class="lang-fr">Contact</h3>
+                    <h3 class="lang-en">Contact</h3>
+                    <p>1400 rue de Guise, La Prairie, QC J5R 5W6</p>
+                    <p><i class="fas fa-phone"></i> +1 438 938 3100</p>
+                    <p><i class="fas fa-envelope"></i> info@groupedan.com</p>
+                    <p class="lang-fr"><i class="fas fa-clock"></i> Lun-Ven: 8h - 17h | Sam: 9h - 15h</p>
+                    <p class="lang-en"><i class="fas fa-clock"></i> Mon-Fri: 8AM - 5PM | Sat: 9AM - 3PM</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3 class="lang-fr">Liens Rapides</h3>
+                    <h3 class="lang-en">Quick Links</h3>
+                    <ul>
+                        <li><a href="services.html" class="lang-fr">Services</a></li>
+                        <li><a href="services.html" class="lang-en">Services</a></li>
+                        <li><a href="about.html" class="lang-fr">À Propos</a></li>
+                        <li><a href="about.html" class="lang-en">About</a></li>
+                        <li><a href="contact.html" class="lang-fr">Contact</a></li>
+                        <li><a href="contact.html" class="lang-en">Contact</a></li>
+                        <li><a href="quote.html" class="lang-fr">Demander un Devis</a></li>
+                        <li><a href="quote.html" class="lang-en">Request a Quote</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h3 class="lang-fr">Suivez-nous</h3>
+                    <h3 class="lang-en">Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Groupe Dan Inc. / Dan Group Inc. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            const location = { lat: 45.4147, lng: -73.4497 }; // La Prairie approximate coordinates
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: location,
+            });
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: "Groupe Dan Inc."
+            });
+        }
+    </script>
+</body>
+</html>

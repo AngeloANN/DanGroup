@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Groupe Dan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            padding-top: 20px;
+        }
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #4b545c;
+            text-align: center;
+        }
+        .logo h2 {
+            font-size: 1.5rem;
+        }
+        .nav-menu {
+            padding: 20px 0;
+        }
+        .nav-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-item:hover, .nav-item.active {
+            background-color: #4b545c;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .logout-btn {
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .content-section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+        }
+        .action-btn {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .edit-btn {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .dashboard-section {
+            display: none;
+        }
+        .dashboard-section.active {
+            display: block;
+        }
+        form {
+            max-width: 600px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .submit-btn {
+            padding: 10px 15px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Groupe Dan</h2>
+            </div>
+            <div class="nav-menu">
+                <div class="nav-item active" data-section="dashboard-home">Dashboard</div>
+                <div class="nav-item" data-section="services-section">Services</div>
+                <div class="nav-item" data-section="appointments-section">Appointments</div>
+                <div class="nav-item" data-section="quotes-section">Quote Requests</div>
+                <div class="nav-item" data-section="contacts-section">Contact Form</div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>Admin Dashboard</h1>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+            
+            <!-- Dashboard Overview Section -->
+            <div id="dashboard-home" class="dashboard-section active">
+                <div class="content-section">
+                    <h2>Dashboard Overview</h2>
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <h3>Pending Appointments</h3>
+                            <p id="pendingAppointments">Loading...</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>New Quote Requests</h3>
+                            <p id="newQuotes">Loading...</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Unread Contact Messages</h3>
+                            <p id="unreadMessages">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Services Section -->
+            <div id="services-section" class="dashboard-section">
+                <div class="content-section">
+                    <h2>Manage Services</h2>
+                    <button id="addServiceBtn" class="submit-btn">Add New Service</button>
+                    <div id="serviceFormContainer" style="display: none; margin-top: 20px;">
+                        <h3>Add/Edit Service</h3>
+                        <form id="serviceForm">
+                            <input type="hidden" id="serviceId">
+                            <div class="form-group">
+                                <label for="serviceName">Service Name (English)</label>
+                                <input type="text" id="serviceName" name="name_en" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceNameFr">Service Name (French)</label>
+                                <input type="text" id="serviceNameFr" name="name_fr" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceDescription">Description (English)</label>
+                                <textarea id="serviceDescription" name="description_en" rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceDescriptionFr">Description (French)</label>
+                                <textarea id="serviceDescriptionFr" name="description_fr" rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceCategory">Category</label>
+                                <select id="serviceCategory" name="category" required>
+                                    <option value="mechanic">Mechanic</option>
+                                    <option value="import-export">Import/Export</option>
+                                    <option value="logistics">Logistics</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="servicePrice">Base Price</label>
+                                <input type="number" id="servicePrice" name="price" min="0" step="0.01">
+                            </div>
+                            <button type="submit" class="submit-btn">Save Service</button>
+                        </form>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <table id="servicesTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Services will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Appointments Section -->
+            <div id="appointments-section" class="dashboard-section">
+                <div class="content-section">
+                    <h2>Manage Appointments</h2>
+                    <table id="appointmentsTable">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Service</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Appointments will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Quotes Section -->
+            <div id="quotes-section" class="dashboard-section">
+                <div class="content-section">
+                    <h2>Quote Requests</h2>
+                    <table id="quotesTable">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Service</th>
+                                <th>Date Requested</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Quote requests will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Contacts Section -->
+            <div id="contacts-section" class="dashboard-section">
+                <div class="content-section">
+                    <h2>Contact Form Submissions</h2>
+                    <table id="contactsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Contact form submissions will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check for authentication
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                window.location.href = '/admin/login.html';
+            }
+            return token;
+        }
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('adminToken');
+            window.location.href = '/admin/login.html';
+        });
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all nav items
+                document.querySelectorAll('.nav-item').forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.dashboard-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show selected section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Load data for the selected section
+                if (sectionId === 'services-section') {
+                    loadServices();
+                } else if (sectionId === 'appointments-section') {
+                    loadAppointments();
+                } else if (sectionId === 'quotes-section') {
+                    loadQuotes();
+                } else if (sectionId === 'contacts-section') {
+                    loadContacts();
+                } else if (sectionId === 'dashboard-home') {
+                    loadDashboardStats();
+                }
+            });
+        });
+
+        // Load Services
+        async function loadServices() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/admin/services', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const tbody = document.querySelector('#servicesTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    data.data.forEach(service => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${service.name_en}</td>
+                            <td>${service.category}</td>
+                            <td>$${service.price ? service.price.toFixed(2) : 'N/A'}</td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${service._id}">Edit</button>
+                                <button class="action-btn delete-btn" data-id="${service._id}">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    
+                    // Add event listeners to edit buttons
+                    document.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const serviceId = this.getAttribute('data-id');
+                            editService(serviceId);
+                        });
+                    });
+                    
+                    // Add event listeners to delete buttons
+                    document.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const serviceId = this.getAttribute('data-id');
+                            deleteService(serviceId);
+                        });
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading services:', error);
+            }
+        }
+
+        // Add New Service Button Click
+        document.getElementById('addServiceBtn').addEventListener('click', function() {
+            // Clear the form
+            document.getElementById('serviceForm').reset();
+            document.getElementById('serviceId').value = '';
+            document.getElementById('serviceFormContainer').style.display = 'block';
+        });
+
+        // Service Form Submit
+        document.getElementById('serviceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const serviceId = document.getElementById('serviceId').value;
+            const token = checkAuth();
+            
+            const formData = {
+                name_en: document.getElementById('serviceName').value,
+                name_fr: document.getElementById('serviceNameFr').value,
+                description_en: document.getElementById('serviceDescription').value,
+                description_fr: document.getElementById('serviceDescriptionFr').value,
+                category: document.getElementById('serviceCategory').value,
+                price: document.getElementById('servicePrice').value
+            };
+            
+            try {
+                let url = '/api/admin/services';
+                let method = 'POST';
+                
+                if (serviceId) {
+                    url = `/api/admin/services/${serviceId}`;
+                    method = 'PUT';
+                }
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('serviceFormContainer').style.display = 'none';
+                    loadServices();
+                }
+            } catch (error) {
+                console.error('Error saving service:', error);
+            }
+        });
+
+        // Edit Service
+        async function editService(serviceId) {
+            const token = checkAuth();
+            try {
+                const response = await fetch(`/api/admin/services/${serviceId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const service = data.data;
+                    
+                    document.getElementById('serviceId').value = service._id;
+                    document.getElementById('serviceName').value = service.name_en;
+                    document.getElementById('serviceNameFr').value = service.name_fr;
+                    document.getElementById('serviceDescription').value = service.description_en;
+                    document.getElementById('serviceDescriptionFr').value = service.description_fr;
+                    document.getElementById('serviceCategory').value = service.category;
+                    document.getElementById('servicePrice').value = service.price;
+                    
+                    document.getElementById('serviceFormContainer').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading service:', error);
+            }
+        }
+
+        // Delete Service
+        async function deleteService(serviceId) {
+            if (confirm('Are you sure you want to delete this service?')) {
+                const token = checkAuth();
+                try {
+                    const response = await fetch(`/api/admin/services/${serviceId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        loadServices();
+                    }
+                } catch (error) {
+                    console.error('Error deleting service:', error);
+                }
+            }
+        }
+
+        // Load Appointments
+        async function loadAppointments() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/admin/appointments', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const tbody = document.querySelector('#appointmentsTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    data.data.forEach(appointment => {
+                        const date = new Date(appointment.dateTime);
+                        const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${appointment.clientName}</td>
+                            <td>${appointment.service ? appointment.service.name_en : 'N/A'}</td>
+                            <td>${formattedDate}</td>
+                            <td>${appointment.status}</td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${appointment._id}">Edit</button>
+                                <button class="action-btn delete-btn" data-id="${appointment._id}">Cancel</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+            }
+        }
+
+        // Load Quotes
+        async function loadQuotes() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/admin/quotes', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const tbody = document.querySelector('#quotesTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    data.data.forEach(quote => {
+                        const date = new Date(quote.createdAt);
+                        const formattedDate = date.toLocaleDateString();
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${quote.clientName}</td>
+                            <td>${quote.service ? quote.service.name_en : 'N/A'}</td>
+                            <td>${formattedDate}</td>
+                            <td>${quote.status}</td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${quote._id}">View/Edit</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading quotes:', error);
+            }
+        }
+
+        // Load Contacts
+        async function loadContacts() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/admin/contacts', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const tbody = document.querySelector('#contactsTable tbody');
+                    tbody.innerHTML = '';
+                    
+                    data.data.forEach(contact => {
+                        const date = new Date(contact.createdAt);
+                        const formattedDate = date.toLocaleDateString();
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${contact.name}</td>
+                            <td>${contact.email}</td>
+                            <td>${contact.subject}</td>
+                            <td>${formattedDate}</td>
+                            <td>
+                                <button class="action-btn edit-btn" data-id="${contact._id}">View</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading contacts:', error);
+            }
+        }
+
+        // Load Dashboard Stats
+        async function loadDashboardStats() {
+            const token = checkAuth();
+            try {
+                const response = await fetch('/api/admin/dashboard-stats', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('pendingAppointments').textContent = data.data.pendingAppointments;
+                    document.getElementById('newQuotes').textContent = data.data.newQuotes;
+                    document.getElementById('unreadMessages').textContent = data.data.unreadMessages;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+                document.getElementById('pendingAppointments').textContent = 'Error loading data';
+                document.getElementById('newQuotes').textContent = 'Error loading data';
+                document.getElementById('unreadMessages').textContent = 'Error loading data';
+            }
+        }
+
+        // Initial load
+        checkAuth();
+        loadDashboardStats();
+    </script>
+</body>
+</html>
