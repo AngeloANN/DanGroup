@@ -40,7 +40,8 @@
     .service-content,
     .service-content.reverse,
     .about-content,
-    .contact-wrapper {
+    .contact-wrapper,
+    .appointment-wrapper {
       grid-template-columns: 1fr;
       gap: 30px;
     }
@@ -77,6 +78,15 @@
     .hero-content p {
       font-size: 1.1rem;
     }
+    
+    /* Appointment page responsive adjustments */
+    .appointment-info {
+      margin-top: 20px;
+    }
+    
+    .info-card {
+      padding: 25px;
+    }
   }
   
   /* Small devices (landscape phones, 576px and up) */
@@ -99,7 +109,8 @@
     
     .service-icon,
     .value-icon,
-    .contact-card .icon {
+    .contact-card .icon,
+    .info-card .icon {
       width: 60px;
       height: 60px;
       font-size: 1.5rem;
@@ -125,6 +136,19 @@
     .about-text h2,
     .service-text h2 {
       font-size: 1.7rem;
+    }
+    
+    /* Appointment page responsive adjustments */
+    .appointment-form button {
+      width: 100%;
+    }
+    
+    .info-card {
+      padding: 20px;
+    }
+    
+    .info-card h3 {
+      font-size: 1.2rem;
     }
   }
   
@@ -166,5 +190,26 @@
     
     #header {
       padding: 10px 0;
+    }
+    
+    /* Appointment page responsive adjustments */
+    .appointment-section {
+      padding: 40px 0;
+    }
+    
+    .section-intro {
+      font-size: 1rem;
+    }
+    
+    .info-card {
+      margin-bottom: 15px;
+    }
+    
+    .info-card ul li {
+      font-size: 0.9rem;
+    }
+    
+    .form-container h2 {
+      font-size: 1.5rem;
     }
   }

@@ -746,6 +746,156 @@
     margin-top: 30px;
     text-align: center;
   }
+
+  /* ===== Appointment Page ===== */
+  .appointment-section {
+    padding: 60px 0;
+  }
+
+  .section-intro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    font-size: 1.1rem;
+  }
+
+  .appointment-wrapper {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .appointment-form {
+    width: 100%;
+  }
+
+  .date-picker {
+    cursor: pointer;
+    background-color: white;
+  }
+
+  .appointment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .info-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+  }
+
+  .info-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .info-card .icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 86, 179, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+
+  .info-card h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+  }
+
+  .info-card ul {
+    padding-left: 5px;
+  }
+
+  .info-card ul li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .info-card ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+
+  .flatpickr-calendar {
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    border: none;
+  }
+
+  .flatpickr-day.selected {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .flatpickr-day.selected:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .flatpickr-day:hover {
+    background: rgba(0, 86, 179, 0.1);
+  }
+
+  .flatpickr-day.today {
+    border-color: var(--secondary-color);
+  }
+
+  .flatpickr-months .flatpickr-month {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .flatpickr-current-month .flatpickr-monthDropdown-months {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .flatpickr-weekdays {
+    background-color: var(--primary-color);
+  }
+
+  .flatpickr-weekday {
+    color: rgba(255, 255, 255, 0.8);
+    background-color: var(--primary-color);
+  }
+
+  .flatpickr-months .flatpickr-prev-month, 
+  .flatpickr-months .flatpickr-next-month {
+    color: white;
+    fill: white;
+  }
+
+  @media (max-width: 992px) {
+    .appointment-wrapper {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Responsive styles for appointment page ===== */
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .appointment-info {
+      margin-top: 30px;
+    }
+  }
   
   /* ===== Language Settings ===== */
   .lang-fr, .lang-en {

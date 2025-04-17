@@ -24,7 +24,7 @@ const AppointmentSchema = new mongoose.Schema({
   },
   serviceType: {
     type: String,
-    enum: ['mechanic', 'logistics-consultation', 'import-export-consultation'],
+    enum: ['import', 'export', 'logistics', 'storage', 'mechanic'],
     required: true
   },
   date: {

@@ -48,33 +48,55 @@ exports.createAppointment = async (req, res) => {
       date,
       endTime,
       description,
-      user: req.user ? req.user.id : null
+      user: req.user ? req.user.id : null,
+      // Set status to pending by default
+      status: 'pending'
     });
     
-    // Create event in Google Calendar
-    const calendarEvent = await createCalendarEvent({
-      name,
-      email,
-      phone,
-      serviceType,
-      date,
-      endTime,
-      description
-    });
+    // Try to create event in Google Calendar but don't let it break the whole process
+    let calendarEventId = null;
+    try {
+      // Only attempt calendar integration if the required utilities are properly configured
+      if (typeof createCalendarEvent === 'function') {
+        const calendarEvent = await createCalendarEvent({
+          name,
+          email,
+          phone,
+          serviceType,
+          date,
+          endTime,
+          description
+        });
+        
+        if (calendarEvent && calendarEvent.id) {
+          calendarEventId = calendarEvent.id;
+          appointment.googleCalendarEventId = calendarEventId;
+          appointment.status = 'confirmed';
+        }
+      }
+    } catch (calendarError) {
+      console.error('Error creating calendar event:', calendarError);
+      // Continue without calendar integration - the appointment will remain in 'pending' status
+    }
     
-    // Store calendar event ID
-    appointment.googleCalendarEventId = calendarEvent.id;
-    appointment.status = 'confirmed';
-    
+    // Save the appointment regardless of calendar integration success
     await appointment.save();
     
-    // Send confirmation email
-    await sendEmail({
-      to: email,
-      subject: `Appointment Confirmation - ${serviceType} Service`,
-      text: `Dear ${name},\n\nYour appointment for ${serviceType} service has been confirmed for ${new Date(date).toLocaleString('en-CA')}.\n\nThank you for choosing Groupe Dan Inc.\n\nBest regards,\nThe Groupe Dan Team`
-    });
+    // Try to send confirmation email but don't let it break the process
+    try {
+      if (typeof sendEmail === 'function') {
+        await sendEmail({
+          to: email,
+          subject: `Appointment Request - ${serviceType} Service`,
+          text: `Dear ${name},\n\nThank you for requesting an appointment for ${serviceType} service on ${new Date(date).toLocaleString('en-CA')}.\n\nYour appointment is currently ${appointment.status}. We will contact you shortly to confirm the details.\n\nThank you for choosing Groupe Dan Inc.\n\nBest regards,\nThe Groupe Dan Team`
+        });
+      }
+    } catch (emailError) {
+      console.error('Error sending confirmation email:', emailError);
+      // Continue even if email fails
+    }
     
+    // Return success response
     res.status(201).json({
       success: true,
       data: appointment

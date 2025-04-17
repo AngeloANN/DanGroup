@@ -66,6 +66,49 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+// Appointment Form
+const appointmentForm = document.getElementById('appointmentForm');
+if (appointmentForm) {
+    appointmentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate the form
+        if (validateForm(appointmentForm)) {
+            // Get selected date and time
+            const selectedDate = appointmentForm.appointmentDate.value;
+            const selectedTime = appointmentForm.appointmentTime.value;
+            
+            // Create a Date object for the appointment start time
+            const startDate = new Date(`${selectedDate}T${selectedTime}`);
+            
+            // Create a Date object for the appointment end time (1 hour after start)
+            const endDate = new Date(startDate);
+            endDate.setHours(endDate.getHours() + 1);
+            
+            // Get form data
+            const formData = {
+                name: appointmentForm.name.value,
+                email: appointmentForm.email.value,
+                phone: appointmentForm.phone.value,
+                serviceType: appointmentForm.serviceType.value,
+                date: startDate.toISOString(),
+                endTime: endDate.toISOString(),
+                description: appointmentForm.details ? appointmentForm.details.value : ''
+            };
+            
+            // Send the form data to the API
+            sendFormData('/api/appointments', formData, function() {
+                // Show success message
+                appointmentForm.style.display = 'none';
+                document.getElementById('formSuccess').style.display = 'block';
+                
+                // Reset form
+                appointmentForm.reset();
+            });
+        }
+    });
+}
+    
     // Function to validate form
     function validateForm(form) {
         let isValid = true;

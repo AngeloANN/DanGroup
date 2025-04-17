@@ -57,19 +57,33 @@ exports.submitContact = async (req, res) => {
     
     await contact.save();
     
-    // Send notification email to admin
-    await sendEmail({
-      to: process.env.EMAIL_USER,
-      subject: `New Contact Form Submission: ${subject}`,
-      text: `A new contact form submission has been received:\n\nName: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}\n\nPlease log in to the admin dashboard to respond.`
-    });
+    // Try to send notification email to admin, but don't fail if it doesn't work
+    try {
+      if (typeof sendEmail === 'function') {
+        await sendEmail({
+          to: process.env.EMAIL_USER,
+          subject: `New Contact Form Submission: ${subject}`,
+          text: `A new contact form submission has been received:\n\nName: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}\n\nPlease log in to the admin dashboard to respond.`
+        });
+      }
+    } catch (emailError) {
+      console.error('Email error:', emailError);
+      // Continue even if email fails
+    }
     
-    // Send confirmation email to user
-    await sendEmail({
-      to: email,
-      subject: `Thank You for Contacting Groupe Dan Inc.`,
-      text: `Dear ${name},\n\nThank you for reaching out to Groupe Dan Inc. We have received your message regarding "${subject}".\n\nOur team will review your inquiry and get back to you as soon as possible.\n\nBest regards,\nGroupe Dan Inc. Team\n\n+1 438 938 3100\ninfo@groupedan.com`
-    });
+    // Try to send confirmation email to user, but don't fail if it doesn't work
+    try {
+      if (typeof sendEmail === 'function') {
+        await sendEmail({
+          to: email,
+          subject: `Thank You for Contacting Groupe Dan Inc.`,
+          text: `Dear ${name},\n\nThank you for reaching out to Groupe Dan Inc. We have received your message regarding "${subject}".\n\nOur team will review your inquiry and get back to you as soon as possible.\n\nBest regards,\nGroupe Dan Inc. Team\n\n+1 438 938 3100\ninfo@groupedan.com`
+        });
+      }
+    } catch (emailError) {
+      console.error('Email error:', emailError);
+      // Continue even if email fails
+    }
     
     res.status(201).json({
       success: true,
