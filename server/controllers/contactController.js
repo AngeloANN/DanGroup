@@ -131,6 +131,43 @@ exports.getContacts = async (req, res) => {
 };
 
 /**
+ * Get a single contact by ID (admin only)
+ * @route GET /api/contact/:id
+ */
+exports.getContactById = async (req, res) => {
+  try {
+    // Only admins and staff can view contact details
+    if (req.user.role === 'customer') {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to access contact details'
+      });
+    }
+    
+    const contact = await Contact.findById(req.params.id);
+    
+    if (!contact) {
+      return res.status(404).json({
+        success: false,
+        message: 'Contact submission not found'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      data: contact
+    });
+  } catch (error) {
+    console.error('Error fetching contact details:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving contact details',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+/**
  * Mark contact as responded (admin only)
  * @route PUT /api/contact/:id
  */
@@ -166,6 +203,70 @@ exports.updateContact = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error updating contact submission',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+/**
+ * Update contact status (responded/not responded) - admin only
+ * @route PUT /api/contact/:id/status
+ */
+exports.updateContactStatus = async (req, res) => {
+  try {
+    // Only admins and staff can update contact status
+    if (req.user.role === 'customer') {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to update contact status'
+      });
+    }
+    
+    const { responded, response } = req.body;
+    
+    const updateData = { responded };
+    if (response) {
+      updateData.response = response;
+    }
+    
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+    
+    if (!contact) {
+      return res.status(404).json({
+        success: false,
+        message: 'Contact submission not found'
+      });
+    }
+    
+    // If there's a response and contact has email, send email to the contact
+    if (response && contact.email) {
+      try {
+        if (typeof sendEmail === 'function') {
+          await sendEmail({
+            to: contact.email,
+            subject: `Re: ${contact.subject} - Response from Groupe Dan Inc.`,
+            text: `Dear ${contact.name},\n\n${response}\n\nBest regards,\nGroupe Dan Inc. Team\n\n+1 438 938 3100\ninfo@groupedan.com`
+          });
+        }
+      } catch (emailError) {
+        console.error('Error sending response email:', emailError);
+        // Continue even if email fails
+      }
+    }
+    
+    res.status(200).json({
+      success: true,
+      data: contact
+    });
+  } catch (error) {
+    console.error('Error updating contact status:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating contact status',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }

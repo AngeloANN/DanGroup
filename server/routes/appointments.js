@@ -6,7 +6,8 @@ const {
   getAppointment,
   updateAppointment,
   deleteAppointment,
-  getAvailableSlots
+  getAvailableSlots,
+  updateAppointmentStatus
 } = require('../controllers/appointmentController');
 const { protect, authorize } = require('../middleware/auth');
 
@@ -17,11 +18,13 @@ router.get('/available/:date', getAvailableSlots);
 
 // Public route for creating appointments
 router.post('/', createAppointment);
-
+ 
 // Protected routes
 router.get('/', protect, getAppointments);
 router.get('/:id', protect, getAppointment);
 router.put('/:id', protect, updateAppointment);
 router.delete('/:id', protect, deleteAppointment);
+
+router.put('/:id/status', protect, authorize('admin', 'staff'), updateAppointmentStatus);
 
 module.exports = router;

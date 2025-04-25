@@ -22,6 +22,7 @@ router.post('/', createQuoteRequest);
 router.get('/', protect, getQuoteRequests);
 router.get('/:id', protect, getQuoteRequest);
 router.put('/:id', protect, authorize('admin', 'staff'), updateQuoteRequest);
-router.delete('/:id', protect, deleteQuoteRequest);
+router.delete('/:id', protect, deleteQuoteRequest); 
+
 
 module.exports = router;

@@ -281,3 +281,146 @@ exports.deleteAppointment = async (req, res) => {
     });
   }
 };
+
+/**
+ * Update appointment status (admin/staff only)
+ * @route PUT /api/appointments/:id/status
+ */
+exports.updateAppointmentStatus = async (req, res) => {
+  try {
+    // Only admins and staff can update appointment status
+    if (!['admin', 'staff'].includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to update appointment status'
+      });
+    }
+    
+    const { status, notes } = req.body;
+    
+    // Validate status
+    const validStatuses = ['pending', 'confirmed', 'completed', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status. Status must be one of: pending, confirmed, completed, cancelled'
+      });
+    }
+    
+    let appointment = await Appointment.findById(req.params.id);
+    
+    if (!appointment) {
+      return res.status(404).json({
+        success: false,
+        message: 'Appointment not found'
+      });
+    }
+    
+    // Prepare update data
+    const updateData = { status };
+    if (notes) {
+      updateData.notes = notes;
+    }
+    
+    // Update in Google Calendar if needed (for confirmed/cancelled status)
+    if (appointment.googleCalendarEventId) {
+      try {
+        if (status === 'cancelled') {
+          await deleteCalendarEvent(appointment.googleCalendarEventId);
+          // Remove calendar ID from appointment since it's now deleted
+          updateData.googleCalendarEventId = null;
+        } else if (status === 'confirmed' && appointment.status !== 'confirmed') {
+          // Update event to show confirmation
+          await updateCalendarEvent(appointment.googleCalendarEventId, {
+            ...appointment.toObject(),
+            status
+          });
+        }
+      } catch (calendarError) {
+        console.error('Error updating calendar event:', calendarError);
+        // Continue even if calendar update fails
+      }
+    } else if (status === 'confirmed' && !appointment.googleCalendarEventId) {
+      // If confirming and no calendar event exists, create one
+      try {
+        if (typeof createCalendarEvent === 'function') {
+          const calendarEvent = await createCalendarEvent({
+            name: appointment.name,
+            email: appointment.email,
+            phone: appointment.phone,
+            serviceType: appointment.serviceType,
+            date: appointment.date,
+            endTime: appointment.endTime,
+            description: appointment.description
+          });
+          
+          if (calendarEvent && calendarEvent.id) {
+            updateData.googleCalendarEventId = calendarEvent.id;
+          }
+        }
+      } catch (calendarError) {
+        console.error('Error creating calendar event:', calendarError);
+        // Continue even if calendar creation fails
+      }
+    }
+    
+    // Update appointment in database
+    appointment = await Appointment.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+    
+    // Send email notification about status change
+    try {
+      if (typeof sendEmail === 'function' && appointment.email) {
+        let emailSubject = `Appointment Update - ${appointment.serviceType}`;
+        let emailBody = `Dear ${appointment.name},\n\n`;
+        
+        switch (status) {
+          case 'confirmed':
+            emailSubject = `Appointment Confirmed - ${appointment.serviceType}`;
+            emailBody += `Your appointment for ${appointment.serviceType} on ${new Date(appointment.date).toLocaleString('en-CA')} has been confirmed.\n\n`;
+            break;
+          case 'cancelled':
+            emailSubject = `Appointment Cancelled - ${appointment.serviceType}`;
+            emailBody += `Your appointment for ${appointment.serviceType} on ${new Date(appointment.date).toLocaleString('en-CA')} has been cancelled.\n\n`;
+            break;
+          case 'completed':
+            emailSubject = `Appointment Completed - ${appointment.serviceType}`;
+            emailBody += `Thank you for your recent appointment for ${appointment.serviceType} on ${new Date(appointment.date).toLocaleString('en-CA')}. We hope everything was to your satisfaction.\n\n`;
+            break;
+          default:
+            emailBody += `The status of your appointment for ${appointment.serviceType} on ${new Date(appointment.date).toLocaleString('en-CA')} has been updated to ${status}.\n\n`;
+        }
+        
+        if (notes) {
+          emailBody += `Additional information: ${notes}\n\n`;
+        }
+        
+        emailBody += `If you have any questions, please contact us.\n\nThank you for choosing Groupe Dan Inc.\n\nBest regards,\nThe Groupe Dan Team`;
+        
+        await sendEmail({
+          to: appointment.email,
+          subject: emailSubject,
+          text: emailBody
+        });
+      }
+    } catch (emailError) {
+      console.error('Error sending status update email:', emailError);
+      // Continue even if email fails
+    }
+    
+    res.status(200).json({
+      success: true,
+      data: appointment
+    });
+  } catch (error) {
+    console.error('Error updating appointment status:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating appointment status',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};

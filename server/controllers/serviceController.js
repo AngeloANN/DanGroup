@@ -139,7 +139,8 @@ exports.deleteService = async (req, res) => {
       });
     }
     
-    await service.remove();
+    // Using findByIdAndDelete instead of the deprecated remove() method
+    await Service.findByIdAndDelete(req.params.id);
     
     res.status(200).json({
       success: true,
