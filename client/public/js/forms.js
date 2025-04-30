@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get the API base URL (localhost in development, actual domain in production)
     const apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
         ? `http://${window.location.hostname}:5000` 
-        : 'https://groupe-dan-site.onrender.com'; // 
+        : 'https://group-dan-backend.onrender.com'; // 
     
     // Contact Form
     const contactForm = document.getElementById('contactForm');
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 
                 // Send the form data to the API
-                sendFormData('https://groupe-dan-site.onrender.com/api/contact', formData, function() {
+                sendFormData('https://group-dan-backend.onrender.com/api/contact', formData, function() {
                     // Show success message
                     contactForm.style.display = 'none';
                     document.getElementById('formSuccess').style.display = 'block';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 
                 // Send the form data to the API
-                sendFormData('https://groupe-dan-site.onrender.com/api/quotes', formData, function() {
+                sendFormData('https://group-dan-backend.onrender.com/api/quotes', formData, function() {
                     // Show success message
                     quoteForm.style.display = 'none';
                     document.getElementById('quoteSuccess').style.display = 'block';
@@ -97,7 +97,7 @@ if (appointmentForm) {
             };
             
             // Send the form data to the API
-            sendFormData('https://groupe-dan-site.onrender.com/api/appointments', formData, function() {
+            sendFormData('https://group-dan-backend.onrender.com/api/appointments', formData, function() {
                 // Show success message
                 appointmentForm.style.display = 'none';
                 document.getElementById('formSuccess').style.display = 'block';
