@@ -69,7 +69,7 @@ const importData = async () => {
   try {
     // Clear existing data
     await Service.deleteMany();
-
+    
     // Create admin user if not exists
     const adminExists = await User.findOne({ email: 'admin@groupedan.com' });
     if (!adminExists) {
@@ -81,10 +81,10 @@ const importData = async () => {
       });
       console.log('Admin user created');
     }
-
+    
     // Import services
     await Service.insertMany(services);
-
+    
     console.log('Data imported successfully');
     process.exit();
   } catch (error) {
