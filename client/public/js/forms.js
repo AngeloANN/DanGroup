@@ -97,7 +97,7 @@ if (appointmentForm) {
             };
             
             // Send the form data to the API
-            sendFormData('https://groupe-dan-site.onrender.com/api/appointments', formData, function() {
+            sendFormData('/api/appointments', formData, function() {
                 // Show success message
                 appointmentForm.style.display = 'none';
                 document.getElementById('formSuccess').style.display = 'block';
