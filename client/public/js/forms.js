@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get the API base URL (localhost in development, actual domain in production)
     const apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
         ? `http://${window.location.hostname}:5000` 
-        : 'https://groupe-dan-site.onrender.com'; // 
+        : 'https://group-dan-backend.onrender.com'; // 
     
     // Contact Form
     const contactForm = document.getElementById('contactForm');
