@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 
                 // Send the form data to the API
-                sendFormData('https://groupe-dan-site.onrender.com/api/contact', formData, function() {
+                sendFormData('/api/contact', formData, function() {
                     // Show success message
                     contactForm.style.display = 'none';
                     document.getElementById('formSuccess').style.display = 'block';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 
                 // Send the form data to the API
-                sendFormData('https://groupe-dan-site.onrender.com/api/quotes', formData, function() {
+                sendFormData('/api/quotes', formData, function() {
                     // Show success message
                     quoteForm.style.display = 'none';
                     document.getElementById('quoteSuccess').style.display = 'block';
