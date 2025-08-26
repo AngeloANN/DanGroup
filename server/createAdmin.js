@@ -59,7 +59,7 @@ const createAdmin = async () => {
     const adminData = {
       name: 'Admin User',
       email: 'admin@groupedan.com',
-      password: 'DG_Adm1n_2025', // You should change this to a secure password
+      password: 'DG_Adm1n_2025', 
       role: 'admin'
     };
 
