@@ -267,20 +267,6 @@
 
     <script src="js/main.js"></script>
     <script src="js/language.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAn86lhxjgvEOIQXpCiIgj81s2GOXWERk&callback=initMap" async defer></script>
-    <script>
-        function initMap() {
-            const location = { lat: 45.4147, lng: -73.4497 }; // La Prairie approximate coordinates
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 15,
-                center: location,
-            });
-            const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                title: "Groupe Dan Inc."
-            });
-        }
-    </script>
+    <script src="js/map.js"></script>
 </body>
 </html>
