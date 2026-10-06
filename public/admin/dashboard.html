@@ -1200,7 +1200,7 @@
     async function loadDashboardStats() {
         const token = checkAuth();
         try {
-            const response = await fetch('/api/dashboard-stats', {
+            const response = await fetch('/api/admin/dashboard-stats', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
