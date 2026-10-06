@@ -11,7 +11,9 @@ const sendEmail = async (options) => {
   try {
     // Create transporter
     const transporter = nodemailer.createTransport({
-      service: process.env.EMAIL_SERVICE,
+      host: process.env.EMAIL_HOST,
+      port: Number(process.env.EMAIL_PORT) || 465,
+      secure: true, // port 465 = encrypted connection from the start
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
