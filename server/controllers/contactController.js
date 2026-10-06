@@ -77,7 +77,7 @@ exports.submitContact = async (req, res) => {
         await sendEmail({
           to: email,
           subject: `Thank You for Contacting Groupe Dan Inc.`,
-          text: `Dear ${name},\n\nThank you for reaching out to Groupe Dan Inc. We have received your message regarding "${subject}".\n\nOur team will review your inquiry and get back to you as soon as possible.\n\nBest regards,\nGroupe Dan Inc. Team\n\n+1 438 938 3100\ninfo@groupedan.com`
+          text: `Dear ${name},\n\nThank you for reaching out to Groupe Dan Inc. We have received your message regarding "${subject}".\n\nOur team will review your inquiry and get back to you as soon as possible.\n\nBest regards,\nGroupe Dan Inc. Team\n\n+1 438 938 3100\ninfo@dangroup.club`
         });
       }
     } catch (emailError) {
@@ -249,7 +249,7 @@ exports.updateContactStatus = async (req, res) => {
           await sendEmail({
             to: contact.email,
             subject: `Re: ${contact.subject} - Response from Groupe Dan Inc.`,
-            text: `Dear ${contact.name},\n\n${response}\n\nBest regards,\nGroupe Dan Inc. Team\n\n+1 438 938 3100\ninfo@groupedan.com`
+            text: `Dear ${contact.name},\n\n${response}\n\nBest regards,\nGroupe Dan Inc. Team\n\n+1 438 938 3100\ninfo@dangroup.club`
           });
         }
       } catch (emailError) {
