@@ -7,6 +7,7 @@ const {
   getAvailableTimeSlots 
 } = require('../utils/googleCalendar');
 const sendEmail = require('../utils/emailSender');
+const buildIcsEvent = requires('../utils/icsEvent')
 
 /**
  * Get available appointment slots for a specific date
@@ -55,28 +56,31 @@ exports.createAppointment = async (req, res) => {
     
     // Try to create event in Google Calendar but don't let it break the whole process
     let calendarEventId = null;
+    // Notify the business by email, with a calendar invite (.ics) attached
     try {
-      // Only attempt calendar integration if the required utilities are properly configured
-      if (typeof createCalendarEvent === 'function') {
-        const calendarEvent = await createCalendarEvent({
-          name,
-          email,
-          phone,
-          serviceType,
-          date,
-          endTime,
-          description
-        });
-        
-        if (calendarEvent && calendarEvent.id) {
-          calendarEventId = calendarEvent.id;
-          appointment.googleCalendarEventId = calendarEventId;
-          appointment.status = 'confirmed';
+      const start = new Date(date);
+      // If no end time was provided, assume 1 hour
+      const end = endTime ? new Date(endTime) : new Date(start.getTime() + 60 * 60 * 1000);
+
+      await sendEmail({
+        to: process.env.EMAIL_USER,
+        subject: `New appointment request: ${serviceType} - ${name}`,
+        text: `New appointment request:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${serviceType}\nDate: ${start.toLocaleString('en-CA', { timeZone: 'America/Toronto' })}\nDetails: ${description || 'None'}\n\nAdd it to your calendar with the attached invite, then confirm it in the admin dashboard.`,
+        icalEvent: {
+          filename: 'appointment.ics',
+          method: 'PUBLISH',
+          content: buildIcsEvent({
+            id: appointment._id,
+            start,
+            end,
+            summary: `${serviceType} - ${name}`,
+            description: `Client: ${name}\nEmail: ${email}\nPhone: ${phone}\n\n${description || ''}`
+          })
         }
-      }
-    } catch (calendarError) {
-      console.error('Error creating calendar event:', calendarError);
-      // Continue without calendar integration - the appointment will remain in 'pending' status
+      });
+    } catch (emailError) {
+      console.error('Error sending appointment notification:', emailError);
+      // Continue even if the email fails: the appointment is still saved
     }
     
     // Save the appointment regardless of calendar integration success

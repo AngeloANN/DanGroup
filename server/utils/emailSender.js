@@ -26,7 +26,8 @@ const sendEmail = async (options) => {
       to: options.to,
       subject: options.subject,
       text: options.text,
-      html: options.html // Optional HTML content
+      html: options.html, // Optional HTML content
+      icalEvent: options.icalEvent //Optional calendar invite (.ics)
     };
     
     // Send email
