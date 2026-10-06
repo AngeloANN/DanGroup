@@ -7,7 +7,7 @@ const {
   getAvailableTimeSlots 
 } = require('../utils/googleCalendar');
 const sendEmail = require('../utils/emailSender');
-const buildIcsEvent = requires('../utils/icsEvent')
+const buildIcsEvent = require('../utils/icsEvent')
 
 /**
  * Get available appointment slots for a specific date
