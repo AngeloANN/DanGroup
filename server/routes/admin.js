@@ -17,22 +17,17 @@ const getDashboardStats = async (req, res) => {
     const db = mongoose.connection;
     
     // Get counts from collections using MongoDB native driver
-    const [services, quotes, appointments, contacts] = await Promise.all([
-      db.collection('services').countDocuments(),
-      db.collection('quoterequests').countDocuments(),
-      db.collection('appointments').countDocuments(),
-      db.collection('contacts').countDocuments()
+    // Count only what needs attention
+    const [pendingAppointments, newQuotes, unreadMessages] = await Promise.all([
+      db.collection('appointments').countDocuments({ status: 'pending' }),
+      db.collection('quoterequests').countDocuments({ status: 'pending' }),
+      // Messages with no reply yet (the model has no "read" field)
+      db.collection('contacts').countDocuments({ response: { $in: [null, ''] } })
     ]);
 
     res.status(200).json({
       success: true,
-      data: {
-        services,
-        quotes,
-        appointments,
-        contacts,
-        recentActivity: []
-      }
+      data: { pendingAppointments, newQuotes, unreadMessages }
     });
   } catch (error) {
     console.error('Error getting dashboard stats:', error);
