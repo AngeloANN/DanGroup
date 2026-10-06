@@ -58,10 +58,16 @@ const createAdmin = async () => {
     // Set admin details
     const adminData = {
       name: 'Admin User',
-      email: 'admin@groupedan.com',
-      password: 'DG_Adm1n_2025', // You should change this to a secure password
+      email: process.env.ADMIN_EMAIL || 'admin@dangroup.club',
+      password: process.env.ADMIN_PASSWORD,
       role: 'admin'
     };
+
+    // Refuse to create an admin without a password in .env
+    if (!adminData.password) {
+      console.error('ADMIN_PASSWORD is missing from .env');
+      process.exit(1);
+    }
 
     // Check if admin already exists
     const existingAdmin = await User.findOne({ email: adminData.email });
