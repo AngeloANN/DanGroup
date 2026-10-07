@@ -45,6 +45,18 @@
   a:hover {
     color: var(--secondary-color);
   }
+
+.nav-link-external {
+  display: block;
+  padding: 10px 20px;
+  color: inherit;
+  text-decoration: none;
+  border-top: 1px solid #4b545c;
+  margin-top: 10px;
+}
+.nav-link-external:hover {
+  background-color: #4b545c;
+}
   
   ul {
     list-style: none;
@@ -676,12 +688,12 @@
   .form-group {
     margin-bottom: 20px;
   }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-  }
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
   
   .form-group input,
   .form-group textarea,
@@ -909,20 +921,29 @@
       margin-top: 30px;
     }
   }
-  
-  /* ===== Language Settings ===== */
-  .lang-fr, .lang-en {
-    display: none;
-  }
-  
-  .fr .lang-fr {
-    display: block;
-  }
-  
-  .en .lang-fr,
-  .fr .lang-en{
-    display: block;
-  }
+
+/* ===== Language Settings ===== */
+/* 1. Hide both languages by default */
+.lang-fr, .lang-en {
+  display: none;
+}
+
+/* 2. Show the active language */
+.fr .lang-fr,
+.en .lang-en {
+  display: block;
+}
+
+/* 3. Hide the other language (beats rules like ".form-group label") */
+.en .lang-fr,
+.fr .lang-en {
+  display: none;
+}
+
+/* 4. No language chosen yet: French by default (Quebec) */
+html:not(.en):not(.fr) .lang-fr {
+  display: block;
+}
   
   /* ===== Default language (French) ===== */
   body {
@@ -1258,5 +1279,13 @@
     .hero {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
     }
+}
+
+/* Language toggle adjustments for mobile hero */
+@media (max-width: 768px) {
+  .hero .lang-fr,
+  .hero .lang-en {
+    display: block;
+  }
 }
 
