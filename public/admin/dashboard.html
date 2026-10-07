@@ -366,7 +366,7 @@
                         <input type="hidden" id="quoteId">
                         <div class="form-group">
                             <label for="quoteName">Client Name</label>
-                            <input type="text" id="quoteName" name="clientName" readonly>
+                            <input type="text" id="quoteName" name="name" readonly>
                         </div>
                         <div class="form-group">
                             <label for="quoteEmail">Email</label>
@@ -696,13 +696,13 @@
                     tbody.innerHTML = '';
                     
                     data.data.forEach(appointment => {
-                        const date = new Date(appointment.dateTime);
+                        const date = new Date(appointment.date);
                         const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
                         
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${appointment.clientName}</td>
-                            <td>${appointment.service ? appointment.service.name_en : 'N/A'}</td>
+                            <td>${appointment.name}</td>
+                            <td>${appointment.serviceType}</td>
                             <td>${formattedDate}</td>
                             <td>${appointment.status}</td>
                             <td>
@@ -882,8 +882,8 @@
                     
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${quote.clientName}</td>
-                        <td>${quote.service ? quote.service.name_en : 'N/A'}</td>
+                        <td>${quote.name}</td>
+                        <td>${quote.serviceType}</td>
                         <td>${formattedDate}</td>
                         <td>${quote.status}</td>
                         <td>
@@ -944,14 +944,14 @@
                 const quote = data.data;
                 
                 document.getElementById('quoteId').value = quote._id;
-                document.getElementById('quoteName').value = quote.clientName;
+                document.getElementById('quoteName').value = quote.name;
                 document.getElementById('quoteEmail').value = quote.email;
                 document.getElementById('quotePhone').value = quote.phone || 'N/A';
-                document.getElementById('quoteService').value = quote.service ? quote.service.name_en : 'N/A';
-                document.getElementById('quoteDetails').value = quote.details || '';
+                document.getElementById('quoteService').value = quote.serviceType;
+                document.getElementById('quoteDetails').value = quote.serviceDetails || '';
                 document.getElementById('quoteStatus').value = quote.status;
                 document.getElementById('quotePrice').value = quote.estimatedPrice || '';
-                document.getElementById('quoteNotes').value = quote.adminNotes || '';
+                document.getElementById('quoteNotes').value = quote.notes || '';
                 
                 document.getElementById('quoteModal').style.display = 'block';
             }
