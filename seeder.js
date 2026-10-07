@@ -54,7 +54,7 @@ const services = [
   },
   {
     title: 'Mechanic and Garage Services',
-    titleFr: 'Services Mécaniques et de Garage',
+    titleFr: 'Services mécaniques et de garage',
     description: 'Our service garage in La Prairie provides general repairs for both our fleet and clients\' vehicles.',
     descriptionFr: 'Notre garage de service à La Prairie offre des réparations générales pour notre flotte et les véhicules de nos clients.',
     category: 'mechanic',
