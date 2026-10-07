@@ -66,10 +66,7 @@
     .form-row {
       grid-template-columns: 1fr;
     }
-    
-    .hero {
-      height: 500px;
-    }
+
     
     .hero-content h1 {
       font-size: 2.5rem;
@@ -97,10 +94,6 @@
     
     .section-title {
       font-size: 2rem;
-    }
-    
-    .hero {
-      height: 400px;
     }
     
     .hero-content h1 {
@@ -156,10 +149,6 @@
   @media (max-width: 576px) {
     .container {
       padding: 0 15px;
-    }
-    
-    .hero {
-      height: 350px;
     }
     
     .hero-content h1 {
