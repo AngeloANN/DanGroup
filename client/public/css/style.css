@@ -1234,14 +1234,6 @@ html:not(.en):not(.fr) .lang-fr {
     }
 }
 
-/* Language toggle adjustments for mobile hero */
-@media (max-width: 768px) {
-    .hero .lang-fr,
-    .hero .lang-en {
-        display: block;
-    }
-}
-
 /* Ensure proper spacing from header */
 @media (max-width: 768px) {
     .hero {
@@ -1279,13 +1271,5 @@ html:not(.en):not(.fr) .lang-fr {
     .hero {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
     }
-}
-
-/* Language toggle adjustments for mobile hero */
-@media (max-width: 768px) {
-  .hero .lang-fr,
-  .hero .lang-en {
-    display: block;
-  }
 }
 
