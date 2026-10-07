@@ -462,6 +462,19 @@
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.6);
   }
+
+.staff-link {
+  margin-top: 8px;
+  font-size: 0.8rem;
+}
+
+.staff-link a {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.staff-link a:hover {
+  color: white;
+}
   
   /* ===== Page Header ===== */
   .page-header {
