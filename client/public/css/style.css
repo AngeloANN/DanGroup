@@ -937,7 +937,7 @@
 /* 3. Hide the other language (beats rules like ".form-group label") */
 .en .lang-fr,
 .fr .lang-en {
-  display: none;
+  display: none !important;
 }
 
 /* 4. No language chosen yet: French by default (Quebec) */
