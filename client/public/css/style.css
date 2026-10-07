@@ -45,18 +45,6 @@
   a:hover {
     color: var(--secondary-color);
   }
-
-.nav-link-external {
-  display: block;
-  padding: 10px 20px;
-  color: inherit;
-  text-decoration: none;
-  border-top: 1px solid #4b545c;
-  margin-top: 10px;
-}
-.nav-link-external:hover {
-  background-color: #4b545c;
-}
   
   ul {
     list-style: none;
