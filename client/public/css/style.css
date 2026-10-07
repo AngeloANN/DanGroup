@@ -906,7 +906,8 @@
     display: block;
   }
   
-  .en .lang-en {
+  .en .lang-fr,
+  .fr .lang-en{
     display: block;
   }
   
